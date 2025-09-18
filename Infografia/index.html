@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía IA: Cultivando el SER en la Educación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .icon-symbol {
+            font-size: 4rem;
+            line-height: 1;
+            color: #0a9396;
+        }
+        .gemini-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .gemini-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 95, 115, 0.2);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #005f73;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .activity-card-content p { margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-11/12 max-w-md text-center">
+            <h3 class="text-xl font-bold text-red-600 mb-4">Error</h3>
+            <p id="errorMessage" class="text-gray-700 mb-6">No se pudo generar una nueva actividad. Por favor, inténtalo de nuevo más tarde.</p>
+            <button onclick="document.getElementById('errorModal').classList.add('hidden')" class="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">Cerrar</button>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#005f73] mb-2">CULTIVANDO EL SER EN LA EDUCACIÓN</h1>
+            <p class="text-lg md:text-xl text-[#0a9396]">Una infografía interactiva con IA para un aprendizaje con propósito.</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-lg shadow-lg p-6 flex flex-col md:flex-row items-center gap-6">
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl font-bold text-[#005f73] mb-3">¿QUÉ ES "SER"? LA RELACIÓN CONTIGO MISMO</h2>
+                    <p class="text-base leading-relaxed">Es la habilidad de cultivar una vida interior rica y madura. Implica desarrollar una brújula interna que nos guíe, actuar con integridad y estar presentes en nuestras vidas. Es la base para el bienestar y la sabiduría.</p>
+                </div>
+                <div class="icon-symbol">🧘</div>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-1 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#005f73] mb-4 text-center">¿Por qué es Clave en la Academia?</h2>
+                 <p class="text-center text-sm mb-4">Integrar el "SER" aporta beneficios fundamentales que potencian el ecosistema educativo, mejorando el bienestar y la efectividad del aprendizaje. Este gráfico muestra cuatro pilares de igual importancia que se fortalecen.</p>
+                <div class="chart-container">
+                    <canvas id="benefitsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#005f73] mb-4 text-center">Las 5 Cualidades del "SER"</h2>
+                <p class="text-center text-sm mb-4">El objetivo "SER" se compone de cinco cualidades interconectadas. Un desarrollo equilibrado de todas ellas, como se visualiza en el gráfico, conduce a una mayor madurez y sabiduría personal. La meta es expandir cada área de forma armónica.</p>
+                <div class="chart-container h-96 max-h-[500px]">
+                    <canvas id="qualitiesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-3 text-center mt-8">
+                 <h2 class="text-3xl font-bold text-[#005f73]">5 FORMAS DE INTEGRAR EL "SER" EN EL AULA</h2>
+                 <p class="mt-2 text-gray-600 max-w-3xl mx-auto">Haz clic en el botón ✨ para que la IA de Gemini genere una nueva actividad práctica para cada cualidad.</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                <div class="icon-symbol mb-4">🧭</div>
+                <h3 class="text-xl font-bold text-[#005f73] mb-2">FOMENTA EL COMPÁS INTERIOR</h3>
+                <div id="activity-compas" class="text-left w-full mb-3 activity-card-content">
+                    <p class="text-center"><strong class="text-lg text-[#ca6702]">Mapa de Propósito</strong></p>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🎯</span><div><h4 class="font-bold text-[#005f73]">Propósito</h4><p>Invita a los estudiantes a reflexionar sobre sus valores y cómo su educación puede ayudarles a contribuir al mundo.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🗺️</span><div><h4 class="font-bold text-[#005f73]">Desarrollo</h4><p>Los estudiantes dibujan un mapa mental. En el centro, "Mi Propósito". En las ramas, conectan talentos, pasiones y problemas del mundo que les gustaría solucionar.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🏁</span><div><h4 class="font-bold text-[#005f73]">Cierre</h4><p>En parejas, comparten un aspecto de su mapa y cómo una materia actual les ayuda a avanzar en esa dirección.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">📊</span><div><h4 class="font-bold text-[#005f73]">Evaluación</h4><p>Se valora la profundidad de la reflexión y la conexión entre sus valores personales y sus metas académicas.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">💬</span><div><h4 class="font-bold text-[#005f73]">Pregunta</h4><p>¿Qué pequeña acción puedes hacer esta semana que esté alineada con tu mapa de propósito?</p></div></div>
+                </div>
+                <button id="btn-compas" class="gemini-button bg-[#ee9b00] text-white font-bold py-2 px-5 rounded-full flex items-center justify-center mt-auto">✨ Generar Otra Idea</button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                <div class="icon-symbol mb-4">🖐️</div>
+                <h3 class="text-xl font-bold text-[#005f73] mb-2">CULTIVA LA INTEGRIDAD Y AUTENTICIDAD</h3>
+                 <div id="activity-integridad" class="text-left w-full mb-3 activity-card-content">
+                    <p class="text-center"><strong class="text-lg text-[#ca6702]">Proyectos de Voz Propia</strong></p>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🎯</span><div><h4 class="font-bold text-[#005f73]">Propósito</h4><p>Diseña tareas que permitan a los estudiantes expresar sus perspectivas únicas y elegir formatos creativos.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🎨</span><div><h4 class="font-bold text-[#005f73]">Desarrollo</h4><p>Al asignar un ensayo o presentación, ofrece formatos variados: video, podcast, ensayo, ilustraciones. El estudiante elige el que mejor le permita expresarse.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🏁</span><div><h4 class="font-bold text-[#005f73]">Cierre</h4><p>Se realiza una "galería de proyectos" donde los estudiantes exploran los trabajos de sus compañeros y dejan comentarios positivos sobre la originalidad.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">📊</span><div><h4 class="font-bold text-[#005f73]">Evaluación</h4><p>Se enfoca en la coherencia entre el mensaje y el formato elegido, y en la autenticidad del argumento.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">💬</span><div><h4 class="font-bold text-[#005f73]">Pregunta</h4><p>¿Qué formato te hizo sentir más cómodo y por qué crees que fue así?</p></div></div>
+                </div>
+                <button id="btn-integridad" class="gemini-button bg-[#ee9b00] text-white font-bold py-2 px-5 rounded-full flex items-center justify-center mt-auto">✨ Generar Otra Idea</button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                <div class="icon-symbol mb-4">🧠</div>
+                <h3 class="text-xl font-bold text-[#005f73] mb-2">PROMUEVE LA APERTURA Y APRENDIZAJE</h3>
+                 <div id="activity-apertura" class="text-left w-full mb-3 activity-card-content">
+                     <p class="text-center"><strong class="text-lg text-[#ca6702]">Celebración del Error</strong></p>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🎯</span><div><h4 class="font-bold text-[#005f73]">Propósito</h4><p>Crear un espacio seguro donde los errores se vean como oportunidades de aprendizaje y no como fracasos.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🧱</span><div><h4 class="font-bold text-[#005f73]">Desarrollo</h4><p>Se establece una "Pared de Errores Valientes". Cuando un estudiante aprende de un error, puede (voluntariamente) escribir en una nota qué error cometió y qué aprendió.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🏁</span><div><h4 class="font-bold text-[#005f73]">Cierre</h4><p>Una vez a la semana, el docente lee un par de notas (anónimamente si se prefiere) y se celebra el aprendizaje logrado.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">📊</span><div><h4 class="font-bold text-[#005f73]">Evaluación</h4><p>Se observa la disposición del grupo a tomar riesgos académicos y a discutir los errores de forma constructiva.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">💬</span><div><h4 class="font-bold text-[#005f73]">Pregunta</h4><p>¿Qué aprendiste de un error que cometiste recientemente, ya sea grande o pequeño?</p></div></div>
+                </div>
+                <button id="btn-apertura" class="gemini-button bg-[#ee9b00] text-white font-bold py-2 px-5 rounded-full flex items-center justify-center mt-auto">✨ Generar Otra Idea</button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                <div class="icon-symbol mb-4">👁️</div>
+                <h3 class="text-xl font-bold text-[#005f73] mb-2">DESARROLLA LA AUTOCONCIENCIA</h3>
+                 <div id="activity-autoconciencia" class="text-left w-full mb-3 activity-card-content">
+                     <p class="text-center"><strong class="text-lg text-[#ca6702]">Diario de Emociones</strong></p>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🎯</span><div><h4 class="font-bold text-[#005f73]">Propósito</h4><p>Animar a los estudiantes a reconocer y nombrar sus emociones en el contexto académico.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">📝</span><div><h4 class="font-bold text-[#005f73]">Desarrollo</h4><p>Antes y después de una tarea desafiante, los estudiantes escriben en una hoja tres palabras que describan cómo se sienten en ese momento.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🏁</span><div><h4 class="font-bold text-[#005f73]">Cierre</h4><p>El docente guía una breve reflexión grupal: "¿Alguien notó un cambio en sus emociones? ¿Por qué creen que ocurrió?".</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">📊</span><div><h4 class="font-bold text-[#005f73]">Evaluación</h4><p>Se valora la capacidad de los estudiantes para identificar y articular sus estados emocionales.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">💬</span><div><h4 class="font-bold text-[#005f73]">Pregunta</h4><p>¿Qué emoción te ayuda a aprender mejor y qué puedes hacer para fomentarla?</p></div></div>
+                </div>
+                <button id="btn-autoconciencia" class="gemini-button bg-[#ee9b00] text-white font-bold py-2 px-5 rounded-full flex items-center justify-center mt-auto">✨ Generar Otra Idea</button>
+            </div>
+            
+            <div class="lg:col-start-2 bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                <div class="icon-symbol mb-4">🕊️</div>
+                <h3 class="text-xl font-bold text-[#005f73] mb-2">PRACTICA LA PRESENCIA</h3>
+                 <div id="activity-presencia" class="text-left w-full mb-3 activity-card-content">
+                     <p class="text-center"><strong class="text-lg text-[#ca6702]">Pausa Consciente</strong></p>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🎯</span><div><h4 class="font-bold text-[#005f73]">Propósito</h4><p>Ayudar a los estudiantes a calmar la mente, reducir la ansiedad y enfocarse antes de comenzar el aprendizaje.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🧘</span><div><h4 class="font-bold text-[#005f73]">Desarrollo</h4><p>Al inicio de la clase, el docente guía a los estudiantes a través de un minuto de silencio, invitándoles a prestar atención únicamente a su respiración.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">🏁</span><div><h4 class="font-bold text-[#005f73]">Cierre</h4><p>El docente termina la pausa con una frase suave como "Ahora, estamos listos para empezar". No se discute la experiencia, solo se transita a la clase.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">📊</span><div><h4 class="font-bold text-[#005f73]">Evaluación</h4><p>Se observa el cambio en el nivel de energía y concentración del grupo después de la pausa.</p></div></div>
+                    <div class="flex items-start space-x-3 mt-3"><span class="text-2xl">💬</span><div><h4 class="font-bold text-[#005f73]">Pregunta</h4><p>¿Cómo se sintió tu cuerpo o tu mente durante ese minuto de silencio?</p></div></div>
+                </div>
+                <button id="btn-presencia" class="gemini-button bg-[#ee9b00] text-white font-bold py-2 px-5 rounded-full flex items-center justify-center mt-auto">✨ Generar Otra Idea</button>
+            </div>
+        </main>
+
+        <footer class="text-center mt-12 py-6 border-t-2 border-[#94d2bd]">
+            <p class="text-xl font-bold text-[#bb3e03]">Educar el SER es invertir en el futuro. Un estudiante que se conoce a sí mismo es un profesional que transformará el mundo.</p>
+            <p class="text-sm text-gray-500 mt-2">Basado en los Objetivos de Desarrollo Interior (innerdevelopmentgoals.org). Potenciado con IA de Gemini.</p>
+        </footer>
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const benefitDescriptions = {
+            'Fomenta la Resiliencia': 'Ayuda a los estudiantes a manejar el estrés y superar los desafíos académicos y personales.',
+            'Impulsa el Aprendizaje Significativo': 'Conecta el conocimiento con los valores y el propósito personal del estudiante, aumentando la motivación.',
+            'Mejora el Clima Escolar': 'Promueve la empatía, la comunicación asertiva y reduce los conflictos, creando un ambiente de respeto.',
+            'Prepara para la Vida': 'Dota a los estudiantes de herramientas socioemocionales para una vida adulta equilibrada y con propósito.'
+        };
+
+        const benefitsCtx = document.getElementById('benefitsChart').getContext('2d');
+        const benefitsChart = new Chart(benefitsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Fomenta la Resiliencia', ['Impulsa el Aprendizaje', 'Significativo'], 'Mejora el Clima Escolar', 'Prepara para la Vida'],
+                datasets: [{
+                    label: 'Beneficios Clave',
+                    data: [25, 25, 25, 25],
+                    backgroundColor: ['#0a9396', '#94d2bd', '#e9d8a6', '#ee9b00'],
+                    borderColor: '#f0f4f8',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.chart.data.labels[context.dataIndex];
+                                if (Array.isArray(label)) {
+                                    label = label.join(' ');
+                                }
+                                const description = benefitDescriptions[label];
+                                return description ? description.match(/.{1,40}/g) || [] : '';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const qualityDefinitions = {
+            'Compás Interior': 'Tener un sentido profundo de responsabilidad y compromiso con los propios valores. Es tu brújula interna.',
+            'Integridad y Autenticidad': 'Actuar y comunicarse de forma genuina y sincera, alineando tus acciones con tus valores.',
+            'Apertura y Mentalidad de Aprendizaje': 'Mantener la curiosidad y la disposición para aprender, desaprender y cambiar de perspectiva.',
+            'Autoconciencia': 'Entender tus propios pensamientos, emociones y patrones de comportamiento para conocerte mejor.',
+            'Presencia': 'La capacidad de estar en el aquí y el ahora, con calma y sin distracciones, para interactuar plenamente con el entorno.'
+        };
+
+        const qualitiesCtx = document.getElementById('qualitiesChart').getContext('2d');
+        const qualitiesChart = new Chart(qualitiesCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Compás Interior', ['Integridad y', 'Autenticidad'], ['Apertura y Mentalidad', 'de Aprendizaje'], 'Autoconciencia', 'Presencia'],
+                datasets: [{
+                    label: 'Desarrollo del Ser',
+                    data: [85, 90, 80, 88, 92],
+                    fill: true,
+                    backgroundColor: 'rgba(148, 210, 189, 0.4)',
+                    borderColor: '#0a9396',
+                    pointBackgroundColor: '#005f73',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#005f73'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: '#d1d5db'
+                        },
+                        grid: {
+                            color: '#e5e7eb'
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 12
+                            },
+                            color: '#005f73'
+                        },
+                        ticks: {
+                            backdropColor: '#f0f4f8',
+                            color: '#6b7280'
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.chart.data.labels[context.dataIndex];
+                                if (Array.isArray(label)) {
+                                    label = label.join(' ');
+                                }
+                                const definition = qualityDefinitions[label];
+                                return definition ? definition.match(/.{1,40}/g) || [] : '';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const apiKey = "AIzaSyA6LgFEzU0HlIjm17PqX8pdog_EvwtimMQ";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        
+        const getIcon = (keyword) => {
+            const iconMap = {
+                'defecto': '🔹', 'mapa': '🗺️', 'hoja': '🍃', 'dialogo': '💬', 'pregunta': '💬',
+                'corazon': '❤️', 'emocion': '😊', 'foco': '💡', 'idea': '💡', 'meta': '🎯',
+                'proposito': '🎯', 'desarrollo': '👣', 'pasos': '👣', 'cierre': '🏁', 'evaluacion': '📊',
+                'nino': '🧑‍🎓', 'estudiante': '🧑‍🎓', 'libro': '📚', 'arte': '🎨', 'escribir': '📝',
+                'reflexion': '🤔', 'grupo': '👥', 'construir': '🧱', 'yoga': '🧘'
+            };
+            const lowerCaseKeyword = keyword.toLowerCase();
+            return iconMap[lowerCaseKeyword] || iconMap['defecto'];
+        };
+
+        const createActivityHTML = (data) => {
+            const sections = [
+                { title: 'Propósito', data: data.proposito },
+                { title: 'Desarrollo', data: data.desarrollo },
+                { title: 'Cierre', data: data.cierre },
+                { title: 'Evaluación', data: data.evaluacion },
+                { title: 'Pregunta', data: data.pregunta },
+            ];
+
+            let html = `<p class="text-center"><strong class="text-lg text-[#ca6702]">${data.nombre}</strong></p>`;
+            
+            sections.forEach(section => {
+                if(section.data && section.data.texto) {
+                    html += `
+                        <div class="flex items-start space-x-3 mt-3">
+                            <span class="text-2xl">${getIcon(section.data.icono || 'defecto')}</span>
+                            <div>
+                                <h4 class="font-bold text-[#005f73]">${section.title}</h4>
+                                <p>${section.data.texto}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            return html;
+        };
+
+        async function generateActivity(quality, buttonElement, activityElement) {
+            buttonElement.disabled = true;
+            const originalButtonText = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<div class="loader"></div>';
+
+            const systemPrompt = `Actúa como un experto diseñador instruccional. Genera una actividad para un aula escolar que fomente la cualidad de '${quality}'. Responde SIEMPRE con un objeto JSON válido, sin markdown y sin texto antes o después. Resume el texto de cada sección a no más de 25 palabras. La estructura del JSON debe ser:
+{
+  "nombre": "Nombre conciso de la actividad",
+  "proposito": { "texto": "...", "icono": "palabra_clave_simple" },
+  "desarrollo": { "texto": "...", "icono": "palabra_clave_simple" },
+  "cierre": { "texto": "...", "icono": "palabra_clave_simple" },
+  "evaluacion": { "texto": "...", "icono": "palabra_clave_simple" },
+  "pregunta": { "texto": "...", "icono": "palabra_clave_simple" }
+}
+Las palabras clave para 'icono' deben ser simples, en español y de una palabra (ej: 'mapa', 'hoja', 'dialogo', 'corazon', 'foco', 'meta').`;
+
+            const payload = {
+                contents: [{ parts: [{ text: systemPrompt }] }],
+                generationConfig: { responseMimeType: "application/json" }
+            };
+            
+            try {
+                let response;
+                let retries = 3;
+                let delay = 1000;
+                for (let i = 0; i < retries; i++) {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) break;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                const jsonText = candidate?.content?.parts?.[0]?.text;
+
+                if (jsonText) {
+                    const activityData = JSON.parse(jsonText);
+                    activityElement.innerHTML = createActivityHTML(activityData);
+                } else {
+                    throw new Error("Respuesta de la API inválida o vacía.");
+                }
+            } catch (error) {
+                console.error("Error al generar actividad:", error);
+                document.getElementById('errorMessage').textContent = 'No se pudo generar la actividad. La respuesta de la IA no tuvo el formato esperado. Por favor, intenta de nuevo.';
+                document.getElementById('errorModal').classList.remove('hidden');
+            } finally {
+                buttonElement.disabled = false;
+                buttonElement.innerHTML = originalButtonText;
+            }
+        }
+
+        const activityMap = {
+            'btn-compas': { quality: 'Compás Interior', element: document.getElementById('activity-compas') },
+            'btn-integridad': { quality: 'Integridad y Autenticidad', element: document.getElementById('activity-integridad') },
+            'btn-apertura': { quality: 'Apertura y Mentalidad de Aprendizaje', element: document.getElementById('activity-apertura') },
+            'btn-autoconciencia': { quality: 'Autoconciencia', element: document.getElementById('activity-autoconciencia') },
+            'btn-presencia': { quality: 'Presencia', element: document.getElementById('activity-presencia') }
+        };
+
+        for (const [btnId, data] of Object.entries(activityMap)) {
+            const button = document.getElementById(btnId);
+            button.addEventListener('click', () => generateActivity(data.quality, button, data.element));
+        }
+
+    </script>
+</body>
+</html>
